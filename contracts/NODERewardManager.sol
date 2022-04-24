@@ -233,41 +233,7 @@ contract NODERewardManager is PaymentSplitter {
             sender != futurUsePool && sender != distributionPool,
             "futur and rewardsPool cannot create node"
         );
-		// uint256 nodePrice = _nodeTypes.get(nodeTypeName).nodePrice * count;
-		// require(
-        //     IERC20(_polarTokenAddress).balanceOf(sender) >= nodePrice,
-        //     "Balance too low for creation."
-        // );
-		// IERC20(_polarTokenAddress).transferFrom(sender, address(this), nodePrice);
-
-		// uint256 contractTokenBalance = IERC20(_polarTokenAddress).balanceOf(address(this));
-        // bool swapAmountOk = contractTokenBalance >= swapTokensAmount;
-        // if (
-        //     swapAmountOk &&
-        //     swapLiquify &&
-        //     !swapping
-        // ) {
-        //     swapping = true;
-
-        //     uint256 futurTokens = contractTokenBalance * futurFee / 100;
-
-        //     swapAndSendToFee(futurUsePool, futurTokens);
-
-        //     uint256 rewardsPoolTokens = contractTokenBalance * rewardsFee / 100;
-
-        //     IERC20(_polarTokenAddress).transfer(
-        //         distributionPool,
-        //         rewardsPoolTokens
-        //     );
-
-        //     uint256 swapTokens = contractTokenBalance * liquidityPoolFee / 100;
-
-        //     swapAndLiquify(swapTokens);
-
-        //     swapTokensForEth(IERC20(_polarTokenAddress).balanceOf(address(this)));
-
-        //     swapping = false;
-        // }
+		
 
 		_createNodes(sender, nodeTypeName, count);
 	}
