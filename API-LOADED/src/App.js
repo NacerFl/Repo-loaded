@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 //onst fs = require('fs');
 
 import {useState} from 'react';
+
+import { ethers } from 'ethers';
+
 import './App.css';
 import contract from './contract/NODERewardManager.json';
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
@@ -13,69 +16,262 @@ const abi = contract.abi;
 
 
 function App() {
-
   const [currentAccount, setCurrentAccount] = useState(null);
 
-  const checkWalletIsConnected = () => { }
 
-  const connectWalletHandler = async () => { 
-
+  const checkWalletIsConnected = async () => {
     const { ethereum } = window;
 
     if (!ethereum) {
-      alert("error metamask");
+      console.log("Make sure u haze Metamask installed");
+      return;
+    } else {
+      console.log("Wallet exists!")
     }
 
-    try { 
-      const accounts = await ethereum.request({ method:'eth_requestAccounts'});
-      console.log("trouver", accounts[0]);
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("Found an authorize account: ", account);
+      setCurrentAccount(account);
+    } else {
+      console.log("no authorized");
+
+    }
+  }
+
+  const connectWalletHandler = async() => {
+    const { ethereum } = window;
+    if (!ethereum) {
+      alert("Please install Metamask !");
+    } 
+    try {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      console.log("Found an account! Address", accounts[0]);
+      console.log("tetst");
       setCurrentAccount(accounts[0]);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getNodeTypeAll = async () => { 
+
+    try{
+      const {ethereum} = window;
+
+      if(ethereum){
+
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.getNodeTypeAll("Tier 1");
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
     }catch(error){
       console.log(error);
     }
 
+  }
+
+  const createNodeFree = async () => { 
+
+    try{
+      const {ethereum} = window;
+
+      if(ethereum){
+
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.createNodeFree("Tier 1", 1);
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
+    }catch(error){
+      console.log(error);
+    }
+
+  }
+
+
+  const getTotalCreatedNodes = async () => { 
+
+    try{
+      const {ethereum} = window;
+
+      if(ethereum){
+
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.getTotalCreatedNodes();
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
+    }catch(error){
+      console.log(error);
+    }
+
+  }
+
+  const cashoutAll = async () => { 
+
+    try{
+      const {ethereum} = window;
+
+      if(ethereum){
+
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.cashoutAll();
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
+    }catch(error){
+      console.log(error);
+    }
 
   }
   
- 
-  const mintNftHandler  = () => { }
-  const connectWalletButton  = () => { }
-/*
-  const mintNftHandler = async () => {
+  const calculateAllClaimableRewards = async () => { 
+
     try{
-    const { ethereum } = window;
+      const {ethereum} = window;
 
-    if (ethereum){
-
-      const that = this;
-	// We set up values with our config file depending on production or not
-	
-	// => Web3 from a HTTP provider
-	that.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8000"));
-
-  const contract = new that.web3.eth.Contract(abi,contractAddress);
-
-  const testNode = await contract.methods.getTotalCreatedNodes();
-
-  await testNode.wait();
-
-  console.log("ca marche");
+      if(ethereum){
 
 
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.calculateAllClaimableRewards(signer);;
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
+    }catch(error){
+      console.log(error);
     }
-  }catch(error){
-    console.log(error);
+
   }
+  
+  const getBalance = async () => { 
+
+    try{
+      const {ethereum} = window;
+
+      if(ethereum){
+
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        
+        
+        const Contract = new ethers.Contract(contractAddress,abi,signer)
+
+        let mintage = await Contract.balanceOf(signer);;
+
+        await mintage.wait(); 
+      }else{
+        console.log("error in METAMASK");
+      }
+    }catch(error){
+      console.log(error);
+    }
+
   }
-*/
-  const mintNftButton = () => {
+
+
+  const connectWalletButton = () => {
     return (
-      <button onClick={mintNftHandler} className='cta-button mint-nft-button'>
-        Mint NFT
+      <button onClick={connectWalletHandler} className='cta-button connect-wallet-button'>
+        Connect Wallet
       </button>
-      
     )
   }
+
+  const getNodeType = () => {
+    return (
+      <button onClick={getNodeTypeAll} className='cta-button mint-nft-button'>
+        getNodeTypeAll
+      </button>
+    )
+  }
+
+  const getAllNode = () => {
+    return (
+      <button onClick={getTotalCreatedNodes} className='cta-button mint-nft-button'>
+        get total node
+      </button>
+    )
+  }
+
+  const createFreeNode = () => {
+    return (
+      <button onClick={createNodeFree} className='cta-button mint-nft-button'>
+        createFreeNode
+      </button>
+    )
+  }
+
+
+  const calculReward = () => {
+    return (
+      <button onClick={calculateAllClaimableRewards} className='cta-button mint-nft-button'>
+        calculateAllClaimableRewards
+      </button>
+    )
+  }
+
+  const getLDNBalance = () => {
+    return (
+      <button onClick={getBalance} className='cta-button mint-nft-button'>
+        getLDNBalance
+      </button>
+    )
+  }
+
+
+  const cashout = () => {
+    return (
+      <button onClick={cashoutAll} className='cta-button mint-nft-button'>
+        cashoutALL
+      </button>
+    )
+  }
+
 
   useEffect(() => {
     checkWalletIsConnected();
@@ -83,10 +279,26 @@ function App() {
 
   return (
     <div className='main-app'>
-      <h1>Scrappy Squirrels Tutorial</h1>
+      <h1>Liste Boutton DAPP</h1>
       <div>
-        {connectWalletButton()}
+      {currentAccount ? getNodeType() : connectWalletButton()}
       </div>
+      <div>
+      {currentAccount ? createFreeNode() : connectWalletButton()}
+      </div>
+      <div>
+      {currentAccount ? getAllNode() : connectWalletButton()}
+      </div>
+      <div>
+      {currentAccount ? calculReward() : connectWalletButton()}
+      </div>
+      <div>
+      {currentAccount ? getLDNBalance() : connectWalletButton()}
+      </div>
+      <div>
+      {currentAccount ? cashout() : connectWalletButton()}
+      </div>
+
     </div>
   )
 }

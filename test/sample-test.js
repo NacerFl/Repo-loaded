@@ -6,6 +6,7 @@ describe("Greeter", function () {
   // const Greeter = await ethers.getContractFactory("Greeter");
   // const greeter = await Greeter.deploy("Hello, world!");
   // await greeter.deployed();
+  //deployment
   const [owner, addr1, addr2, addr3, addr4, addr5] = await ethers.getSigners();
 
   const IterableNode = await hre.ethers.getContractFactory("IterableNodeTypeMapping");
@@ -28,6 +29,8 @@ describe("Greeter", function () {
     [20,55,25,20],
     120
     );
+
+    //test
  
   await iterableNode.deployed();
   await token.deployed();

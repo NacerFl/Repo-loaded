@@ -99,6 +99,7 @@ contract NODERewardManager is PaymentSplitter {
         swapTokensAmount = swapAmount * (10**18);
     }
 
+	//new update
     modifier onlySentry() {
         require(msg.sender == _polarTokenAddress || msg.sender == _gateKeeper, "Fuck off");
         _;
