@@ -7,10 +7,14 @@ import { ethers } from 'ethers';
 
 import './App.css';
 import contract from './contract/NODERewardManager.json';
+import TokenContract from './contract/Token.json';
+
+const contractTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 //const abi = contract.abi;
 
 const abi = contract.abi;
+const abiToken = TokenContract;
 
 
 
@@ -72,7 +76,7 @@ function App() {
 
         let mintage = await Contract.getNodeTypeAll("Tier 1");
 
-        await mintage.wait(); 
+        console.log(mintage);
       }else{
         console.log("error in METAMASK");
       }
@@ -125,7 +129,8 @@ function App() {
 
         let mintage = await Contract.getTotalCreatedNodes();
 
-        await mintage.wait(); 
+        console.log(mintage);
+        //await mintage.wait(); 
       }else{
         console.log("error in METAMASK");
       }
@@ -175,9 +180,10 @@ function App() {
         
         const Contract = new ethers.Contract(contractAddress,abi,signer)
 
-        let mintage = await Contract.calculateAllClaimableRewards(signer);;
+        let mintage = await Contract.calculateAllClaimableRewards(signer.getAddress());
+        console.log(mintage);
 
-        await mintage.wait(); 
+        //await mintage.wait(); 
       }else{
         console.log("error in METAMASK");
       }
@@ -199,11 +205,13 @@ function App() {
         const signer = provider.getSigner();
         
         
-        const Contract = new ethers.Contract(contractAddress,abi,signer)
+        const Contract = new ethers.Contract(contractTokenAddress,abiToken,signer)
 
-        let mintage = await Contract.balanceOf(signer);;
+        let mintage = await Contract.balanceOf(signer.getAddress());
 
-        await mintage.wait(); 
+        console.log(ethers.utils.formatEther(mintage));
+
+        //await mintage.wait(); 
       }else{
         console.log("error in METAMASK");
       }
