@@ -1,28 +1,11 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity >=0.5.0;
+                                                     
 
 
-
-// a library for performing overflow-safe math, courtesy of DappHub (https://github.com/dapphub/ds-math)
-
-library SafeMath {
-    function add(uint x, uint y) internal pure returns (uint z) {
-        require((z = x + y) >= x, 'ds-math-add-overflow');
-    }
-
-    function sub(uint x, uint y) internal pure returns (uint z) {
-        require((z = x - y) <= x, 'ds-math-sub-underflow');
-    }
-
-    function mul(uint x, uint y) internal pure returns (uint z) {
-        require(y == 0 || (z = x * y) / y == x, 'ds-math-mul-overflow');
-    }
-}
-
-
-interface IMeerkatFactory {
-    function getPair(address tokenA, address tokenB) external view returns (address pair);
-    function createPair(address tokenA, address tokenB) external returns (address pair);
-}
+import "./safeMath2.sol";
+import "./IMeerkatPair.sol";
 
 
 library MeerkatLibrary {
@@ -106,4 +89,3 @@ library MeerkatLibrary {
     }
     
 }
-
