@@ -11,7 +11,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract TogetherUkr is ERC721Enumerable, Ownable {
+contract NftTemplate is ERC721Enumerable, Ownable {
   using Strings for uint256;
 
     using ECDSA for bytes32;
