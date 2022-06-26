@@ -11,6 +11,9 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
+const accounts = {
+  mnemonic: process.env.PRIVATE_KEYFTM,
+};
 
 const getHDWallet = () => {
   const { MNEMONIC, PRIVATE_KEY } = process.env;
@@ -35,14 +38,36 @@ const getHDWallet = () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
  module.exports = {
-  solidity: "0.8.4",
+  solidity: {
+    compilers: [
+
+      {
+        version: "0.6.6"
+      },
+      {
+        version: "0.8.9"
+
+      }
+    ]
+  },
   networks: {
     hardhat: {
       allowUnlimitedContractSize: true
-    },cronos: {
+    },
+    cronos: {
       url: "HTTP://127.0.0.1:8000",
       accounts: getHDWallet(),
-    }
+      allowUnlimitedContractSize: true,
+      gas: 6721975,
+      gasPrice: 20000000
+    },fantomtest: {
+      url: "https://rpc.testnet.fantom.network",
+      accounts,
+      chainId: 10012,
+      live: false,
+      saveDeployments: true,
+      gasMultiplier: 2
+    },
   },
   abiExporter: [
     {
